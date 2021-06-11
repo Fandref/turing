@@ -1,0 +1,335 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Детермінована машина Тьюрінга</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <div id="manual-block">
+      <div class="manual">
+          <button class="light-button" id="close-manual">—</button>
+          <h2>Інструкція</h2>
+          <ul>
+            <li> Задайте множину станів машини Тьюрінга</li>
+            <li> Встановіть початковий стан машини Тьюрінга (поточний
+            стан)</li>
+            <li> Задайте алфавіт машини Тьюрінга</li>
+            <li> Встановіть початкову конфігурацію на стрічку</li>
+            <li> Задайте команди машини Тьюрінга.<br>   
+            <li> Натисніть кнопку "Старт" для запуску машини Тьюрінга</li>
+            <br>
+            <li> При повторному запуску не забувайте встановлювати
+            початковий стан</li>
+            <br>
+            <br>
+            <li> В пункті меню "Файл" можна зберегти в файл та завантажити із нього ваші налаштування машини Тьюрінга</li>
+            <br>
+            <li> Пункт меню "Поля" слугує для завантаження прикладу налаштувань або видалення поточних</li>
+    
+            
+           
+          </ul>
+      </div>
+    </div>
+    <div id="file-save-block">
+      <div class="file-save-form">
+        <button class="light-button" id="close-save-form">—</button>
+        <h2>Назва файлу</h2>
+        <div class="input-block">
+          <input id="name-saving-file" type="text" value="untitled">
+        </div>
+        <button id="save-file" class="button main-button">Зберегти</button>
+      </div>
+    </div>
+    <header>
+      <h1>Детермінована машина Тьюрінга</h1>
+      <nav class="tool-bar">
+        <div class="function-block">
+
+          <div class="menu-block file-menu">
+            <div class="items menu-label">Файл</div>
+            <ul class="menu">
+              <li class="menu-items"><button id="start-save">Зберегти</button></li>
+              <li class="menu-items">
+                <div class="file-input">
+                  <label for="load-file">Завантажити</label>
+                  <input type="file" id="load-file" accept=".tm" hidden/>
+                </div>
+            </li>
+            </ul>
+          </div>
+
+          <div class="menu-block edit-menu">
+            <div class="items menu-label">Поля</div>
+            <ul class="menu">
+              <li class="menu-items"><button id="example-data-load">Завантажити приклад</button></li>
+              <li class="menu-items"><button id="erase-data">Очистити всі</button></li>
+            </ul>
+          </div>
+          
+          
+        </div>
+        <div class="manual-block">
+          <button class="items" id="open-manual">Інструкція</button>
+        </div>
+      </nav>
+    </header>
+    
+
+   
+    <div class="program-container">
+       <div class="top-bar">
+        <div class="next-command-container">
+          <div class="lable">Наступна команда</div>
+          <div class="output-field" id="ctlNextCommand"></div>
+        </div>
+        <div class="state-container">
+          <div class="lable">Поточний стан</div>
+          <div class="output-field" id="state"></div>
+        </div>
+      </div>
+      
+      <div id="ctlTapeContainer">
+        <table id="ctlTape">
+          <tbody>
+            <tr id="tape">
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="control-panel">
+        <div class="speed-container">
+          <label for="speed">Швидкість</label>
+          <select id="speed">
+            <option value="0">миттєво</option>
+            <option value="50">дуже швидко</option>
+            <option value="200">швидко</option>
+            <option selected="" value="500">неспішно</option>
+            <option value="1000">повільно</option>
+            <option value="5000">дуже повільно</option>
+          </select>
+        </div>
+        <button class="button" id="btnShowNextCommand">Показати наступну команду</button>
+        <button class="button" id="btnStep">Крок</button>
+        <button class="button main-button" id="btnStart">Старт</button>  
+        <button class="button  main-button" id="btnStop" disabled="">Стоп</button>
+      </div>
+      <div class="program-panel">
+        <div class="row">
+          <div class="col col-left initial-config">
+            <h2>Конфігурація</h2>
+            <div class="form">
+              <div class="input-block">
+                <input id="config" type="text">
+              </div>
+              <button class="button main-button" id="btnSetConfig">Встановити</button> 
+            </div>
+          </div>
+          <div class="col col-right initial-state">
+            <h2>Початковий стан</h2>
+            <div class="form">
+              <div class="input-block">
+                <input id="newState" type="text">
+              </div>
+              <button class="button main-button" id="btnSetState">Встановити</button>
+            </div>
+          </div>
+        </div>
+        <div class="row align-start">
+          <div class="col col-left command-area-block">
+            <h2>Команди</h2>
+            <textarea id="program" wrap="off"></textarea>
+            <div class="specification">
+              <div id="header-specification">
+                <h3>Формат команд</h3>
+                <span>-</span>
+              </div>
+              <div id="specification-content">
+                <p>Кожна команда має вигляд: </p>
+                <p>
+                  <code>s<sub>i</sub> q<sub>j</sub> -&gt; s<sub>k</sub> q<sub>m</sub> D<sub>t</sub> </code>   
+                  де:
+                  <ul>
+                    <li> <code> s <sub> i </sub> </code>, <code> s <sub> k </sub> </code>  - 
+                    символи з алфавіту машини Тьюрінга, </li>
+                    <li> <code> q <sub> j </sub> </code>, <code> q <sub> m </sub> </code>  - 
+                    стани з множини станів машини Тьюрінга, </li>
+                    <li> <code> D <sub> t </sub> </code> - напрямок переміщення: одне з
+                    <code> {L, R, H} </code></li>
+                  </ul>
+                </p>
+                <p><code> STOP </code>  - Кінцеве стан машини Тьюрінга</p>
+                <p><code> B </code>  - Пустий символ</p>
+                <p>
+                  Можна використовувати коментарі в стилі C ++ <br>
+                  <code> // Це коментар </code>
+                </p>
+              </div>
+              
+   
+      
+            </div>
+          </div>
+          <div class="col col-right other-setting">
+            <div class="set-states">
+              <h2>Множина станів</h2>
+              <div class="container-states">
+                <table class="states" width="100%">
+                  <tbody>
+                  <tr>
+                    <td width="25%"><input disabled checked type="checkbox">STOP</td>
+                    <td width="25%"><input id="stateQ10" type="checkbox">q10</td>
+                    <td width="25%"><input id="extraState0" class="extraState" type="text"></td>
+                    <td id="tdMoreStates" width="25%"><button class="light-button" title="Додати стани" id="tmMoreStatesButton">+</button></td></tr>
+                  <tr>
+                    <td><input id="stateQ1" type="checkbox">q1</td>
+                    <td><input id="stateQ11" type="checkbox">q11</td>
+                    <td><input id="extraState1" class="extraState" type="text"></td></tr>
+                  <tr>
+                    <td><input id="stateQ2" type="checkbox">q2</td>
+                    <td><input id="stateQ12" type="checkbox">q12</td>
+                    <td><input id="extraState2" class="extraState" type="text"></td></tr>
+                  <tr>
+                    <td><input id="stateQ3" type="checkbox">q3</td>
+                    <td><input id="stateQ13" type="checkbox">q13</td>
+                    <td><input id="extraState3" class="extraState" type="text"></td></tr>
+                  <tr>
+                    <td><input id="stateQ4" type="checkbox">q4</td>
+                    <td><input id="stateQ14" type="checkbox">q14</td>
+                    <td><input id="extraState4" class="extraState" type="text"></td></tr>
+                  <tr>
+                    <td><input id="stateQ5" type="checkbox">q5</td>
+                    <td><input id="stateQ15" type="checkbox">q15</td>
+                    <td><input id="extraState5" class="extraState" type="text"></td></tr>
+                  <tr>
+                    <td><input id="stateQ6" type="checkbox">q6</td>
+                    <td><input id="stateQ16" type="checkbox">q16</td>
+                    <td><input id="extraState6" class="extraState" type="text"></td></tr>
+                  <tr>
+                    <td><input id="stateQ7" type="checkbox">q7</td>
+                    <td><input id="stateQ17" type="checkbox">q17</td>
+                    <td><input id="extraState7" class="extraState" type="text"></td></tr>
+                  <tr>
+                    <td><input id="stateQ8" type="checkbox">q8</td>
+                    <td><input id="stateQ18" type="checkbox">q18</td>
+                    <td><input id="extraState8" class="extraState" type="text"></td></tr>
+                  <tr>
+                    <td><input id="stateQ9" type="checkbox">q9</td>
+                    <td><input id="stateQ19" type="checkbox">q19</td>
+                    <td><input id="extraState9" class="extraState" type="text"></td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="alphavite">
+              <h2>Алфавіт</h2>
+              <table class="alphabet" width="100%">
+                <tbody>
+                <tr>
+                  <td width="33%" colspan="2"><input id="allDigit" onclick="chkAllDigit_click(this.checked)" type="checkbox"> 
+                    Цифри </td>
+                  <td width="33%" colspan="2"><input id="allAlpha" onclick="chkAllAlpha_click(this.checked)" type="checkbox"> 
+                    Букви </td>
+                  <td width="34%" colspan="2"><input id="allSymbol" onclick="chkAllSymbol_click(this.checked)" type="checkbox"> 
+                    Символи </td></tr>
+                <tr>
+                  <td><input id="symbol0" type="checkbox">0</td>
+                  <td><input id="symbolA" type="checkbox">a</td>
+                  <td><input id="symbolK" type="checkbox">k</td>
+                  <td><input id="symbolU" type="checkbox">u</td>
+                  <td><input disabled="" checked="" type="checkbox">B</td>
+                  <td><input class="extraSymbol" id="extraSymbol0" type="text"></td>
+                </tr>
+                <tr>
+                  <td><input id="symbol1" type="checkbox">1</td>
+                  <td><input id="symbolB" type="checkbox">b</td>
+                  <td><input id="symbolL" type="checkbox">l</td>
+                  <td><input id="symbolV" type="checkbox">v</td>
+                  <td><input id="symbolLess" type="checkbox">&lt;</td>
+                  <td><input class="extraSymbol" id="extraSymbol1" type="text"></td></tr>
+                <tr>
+                  <td><input id="symbol2" type="checkbox">2</td>
+                  <td><input id="symbolC" type="checkbox">c</td>
+                  <td><input id="symbolM" type="checkbox">m</td>
+                  <td><input id="symbolW" type="checkbox">w</td>
+                  <td><input id="symbolGreater" type="checkbox">&gt;</td>
+                  <td><input class="extraSymbol" id="extraSymbol2" type="text"></td>
+                </tr>
+                <tr>
+                  <td><input id="symbol3" type="checkbox">3</td>
+                  <td><input id="symbolD" type="checkbox">d</td>
+                  <td><input id="symbolN" type="checkbox">n</td>
+                  <td><input id="symbolX" type="checkbox">x</td>
+                  <td><input id="symbolEqual" type="checkbox">=</td>
+                  <td><input class="extraSymbol" id="extraSymbol3" type="text"></td>
+                </tr>
+                <tr>
+                  <td><input id="symbol4" type="checkbox">4</td>
+                  <td><input id="symbolE" type="checkbox">e</td>
+                  <td><input id="symbolO" type="checkbox">o</td>
+                  <td><input id="symbolY" type="checkbox">y</td>
+                  <td><input id="symbolPlus" type="checkbox">+</td>
+                  <td><input class="extraSymbol" id="extraSymbol4" type="text"></td>
+                </tr>
+                <tr>
+                  <td><input id="symbol5" type="checkbox">5</td>
+                  <td><input id="symbolF" type="checkbox">f</td>
+                  <td><input id="symbolP" type="checkbox">p</td>
+                  <td><input id="symbolZ" type="checkbox">z</td>
+                  <td><input id="symbolMinus" type="checkbox">-</td>
+                  <td><input class="extraSymbol" id="extraSymbol5" type="text"></td>
+                </tr>
+                <tr>
+                  <td><input id="symbol6" type="checkbox">6</td>
+                  <td><input id="symbolG" type="checkbox">g</td>
+                  <td><input id="symbolQ" type="checkbox">q</td>
+                  <td><input class="extraSymbol" id="extraSymbol10" type="text"></td>
+                  <td><input id="symbolStar" type="checkbox">*</td>
+                  <td><input class="extraSymbol" id="extraSymbol6" type="text"></td>
+                </tr>
+                <tr>
+                  <td><input id="symbol7" type="checkbox">7</td>
+                  <td><input id="symbolH" type="checkbox">h</td>
+                  <td><input id="symbolR" type="checkbox">r</td>
+                  <td><input class="extraSymbol" id="extraSymbol11" type="text"></td>
+                  <td><input id="symbolSlash" type="checkbox">/</td>
+                  <td><input class="extraSymbol" id="extraSymbol7" type="text"></td>
+                </tr>
+                <tr>
+                  <td><input id="symbol8" type="checkbox">8</td>
+                  <td><input id="symbolI" type="checkbox">i</td>
+                  <td><input id="symbolS" type="checkbox">s</td>
+                  <td><input class="extraSymbol" id="extraSymbol12" type="text"></td>
+                  <td><input id="symbolHat" type="checkbox">^</td>
+                  <td><input class="extraSymbol" id="extraSymbol8" type="text"></td>
+                </tr>
+                <tr>
+                  <td><input id="symbol9" type="checkbox">9</td>
+                  <td><input id="symbolJ" type="checkbox">j</td>
+                  <td><input id="symbolT" type="checkbox">t</td>
+                  <td><input class="extraSymbol" id="extraSymbol13" type="text"></td>
+                  <td><input id="symbolPercent" type="checkbox">%</td>
+                  <td><input class="extraSymbol" id="extraSymbol9" type="text"></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="message-container">
+      <div id="message"></div>
+    </div>
+    <div class="error-container">
+      <div id="errorType"></div>
+      <div id="errorMessage"></div>
+    </div>
+    <div class="copy"><span class="author" title="створив">А.О. Степанчук, 2020</span></div>
+  </body>
+
+
+  <script src="js/script.js"></script>
+</html>

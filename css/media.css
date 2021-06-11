@@ -1,0 +1,42 @@
+
+@media (max-width: 868px){
+  .col-right {
+    width: 40%;
+  }
+  .col-left{
+    width: 60%;
+  }
+
+}
+
+@media (max-width: 768px){
+  .row{
+    margin: 0 -16px;
+  }
+  .col{
+    padding: 16px;
+    width: 100%;
+  }
+  .initial-config{
+    width: 60%
+  }
+  .initial-state{
+    width: 40%;
+  }
+  .command-area-block{
+    position: static;
+  }
+  .button, .button:disable{
+    padding: 10px 15px;
+  }
+
+}
+@media (max-width: 658px){
+  .initial-config{
+    width: 100%
+  }
+  .initial-state{
+    width: 100%;
+  }
+
+}
